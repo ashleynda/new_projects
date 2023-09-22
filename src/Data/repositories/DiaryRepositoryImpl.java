@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class DiaryRepositoryImpl implements DiaryRepository {
     private List<Diary> diaries = new ArrayList<>();
-    private int count;
+
 
     public Diary save(Diary diary) {
         if (diary.getId() == 0) saveNew(diary);
@@ -19,8 +19,7 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @Override
     public void delete(Diary diary){
-        Diary foundD = findById(diary.getId());
-        diaries.remove(foundD);
+        diaries.remove(diary);
     }
 
     private void saveNew(Diary diary) {
@@ -43,14 +42,14 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @Override
     public void clear() {
-
+        diaries.clear();
     }
 
     public Diary findById(int id) {
         for (Diary diary : diaries){
             if (diary.getId() == id) return diary;
         }
-        return null;
+       return null;
     }
 
     @Override

@@ -6,6 +6,9 @@ import Data.repositories.DiaryRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -52,6 +55,7 @@ public class DiaryRepositoryImplTest {
 
         Diary updateDiary = new Diary();
         diaryRepository.save(updateDiary);
+        updateDiary.setId(1);
         diaryRepository.delete(updateDiary);
         assertEquals(1, diaryRepository.count());
     }
@@ -61,21 +65,45 @@ public class DiaryRepositoryImplTest {
         diary.setUserName("Tomide");
         diaryRepository.save(diary);
 
-        Diary updateDiary = new Diary();
-        diaryRepository.save(updateDiary);
-        diaryRepository.delete(updateDiary);
+//        Diary updateDiary = new Diary();
+//        diaryRepository.save(updateDiary);
+//        updateDiary.setId(1);
+//        diaryRepository.delete(updateDiary);
+//        assertNull(diaryRepository.findById(2));
+        Diary diary1 = new Diary();
+        diary1.setUserName("Ashley");
+        diaryRepository.save(diary1);
+
+        assertEquals(2, diaryRepository.count());
+        diaryRepository.delete(diary1);
+        assertEquals(1, diaryRepository.count());
         assertNull(diaryRepository.findById(2));
     }
     @Test
     public void findAllDiaryTest() {
         Diary diary = new Diary();
         diary.setUserName("Tomide");
-        diary.setUserName("Kevin");
+        diaryRepository.save(diary);
+
+        Diary updateDiary = new Diary();
+        updateDiary.setUserName("americana");
+        diaryRepository.save(updateDiary);
+        updateDiary.setId(1);
+        Iterable<Diary> all_diaries = List.of(new Diary[]{diary, updateDiary});
+        assertEquals(all_diaries, diaryRepository.findAll());
+    }
+    @Test
+    public void clearAllDiaryTest() {
+        Diary diary = new Diary();
+        diary.setUserName("Tomide");
         diaryRepository.save(diary);
 
         Diary updateDiary = new Diary();
         diaryRepository.save(updateDiary);
-        diaryRepository.findAll();
+        updateDiary.setId(1);
+        diaryRepository.clear();
+        assertEquals(0, diaryRepository.count());
+
 
 
     }
