@@ -1,6 +1,6 @@
-package Data.repositories;
+package com.tatafo.Data.repositories;
 
-import Data.models.Diary;
+import com.tatafo.Data.models.Diary;
 
 public interface DiaryRepository {
     Diary save(Diary diary);
@@ -9,6 +9,7 @@ public interface DiaryRepository {
     Iterable <Diary> findAll();
     long count();
     void clear();
+
 
 
 

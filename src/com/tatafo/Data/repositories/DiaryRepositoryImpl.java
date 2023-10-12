@@ -1,11 +1,9 @@
-package Data.repositories;
+package com.tatafo.Data.repositories;
 
-import Data.models.Diary;
-import Data.models.Entry;
+import com.tatafo.Data.models.Diary;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class DiaryRepositoryImpl implements DiaryRepository {
     private List<Diary> diaries = new ArrayList<>();
@@ -44,6 +42,8 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     public void clear() {
         diaries.clear();
     }
+
+
 
     public Diary findById(int id) {
         for (Diary diary : diaries){

@@ -1,12 +1,10 @@
 package tests;
 
-import Data.models.Diary;
-import Data.repositories.DiaryRepository;
-import Data.repositories.DiaryRepositoryImpl;
+import com.tatafo.Data.models.Diary;
+import com.tatafo.Data.repositories.DiaryRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

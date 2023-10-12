@@ -1,8 +1,7 @@
 package tests;
 
-import Data.models.Diary;
-import Data.models.Entry;
-import Data.repositories.EntryRepositoryImpl;
+import com.tatafo.Data.models.Entry;
+import com.tatafo.Data.repositories.EntryRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
-package Data.repositories;
+package com.tatafo.Data.repositories;
 
-import Data.models.Entry;
+import com.tatafo.Data.models.Entry;
 
 public interface EntryRepository {
     Entry save(Entry emtry
@@ -10,4 +10,6 @@ public interface EntryRepository {
     Iterable <Entry> findAll();
     long count();
     void clear();
+
+    Entry findUserName(String userName, String title);
 }

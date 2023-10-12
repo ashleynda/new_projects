@@ -1,53 +1,58 @@
 package tests;
 
-import Data.repositories.DiaryRepositoryImpl;
+import com.tatafo.dtos.RegisterUserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import services.DiaryServiceImpl;
+import com.tatafo.services.DiaryServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DiaryServiceImplTest {
     private DiaryServiceImpl diaryService;
+    private RegisterUserRequest registerUserRequest;
     @BeforeEach
     public void startWithThis() {
         diaryService = new DiaryServiceImpl();
+        registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setUserName("userName");
+        registerUserRequest.setPassword("password");
     }
     @Test
     public void userCanRegister_CountIsOneTest() {
-        diaryService.registerUser("Ashley", "password");
+        diaryService.registerUser(registerUserRequest);
         assertEquals(1, diaryService.count());
     }
 
     @Test
     public void canFindUserNameTest() {
-        diaryService.registerUser("Ashley", "password");
-        diaryService.findByUserName("Ashley");
+        diaryService.registerUser(registerUserRequest);
+        diaryService.findByUserName(registerUserRequest.getUserName());
         assertEquals(1, diaryService.count());
-        assertEquals("Ashley", diaryService.findByUserName("Ashley").getUserName());
+        assertEquals(registerUserRequest.getUserName(), diaryService.findByUserName(registerUserRequest.getUserName()).getUserName());
     }
     @Test
     public void userRegisterWithUniqueUserName() {
-        diaryService.registerUser("Ashley", "password");
-        diaryService.findByUserName("Ashley");
+        diaryService.registerUser(registerUserRequest);
+        diaryService.findByUserName(registerUserRequest.getUserName());
         assertEquals(1, diaryService.count());
 
-        assertThrows(IllegalArgumentException.class, ()-> diaryService.registerUser("Ashley", "password"));
+        assertThrows(IllegalArgumentException.class, ()-> diaryService.registerUser(registerUserRequest));
     }
     @Test
     public void diariesCanBeCreatedAndDeleted() {
-        diaryService.registerUser("Ashley", "password");
-        diaryService.findByUserName("Ashley");
-        assertEquals("Ashley", diaryService.findByUserName("Ashley").getUserName());
+        diaryService.registerUser(registerUserRequest);
+        diaryService.findByUserName(registerUserRequest.getUserName());
+        assertEquals(registerUserRequest.getUserName(), diaryService.findByUserName(registerUserRequest.getUserName()).getUserName());
 
-        diaryService.registerUser("Tobi", "password");
-        diaryService.findByUserName("Tobi");
+        RegisterUserRequest registerUserRequest1 = new RegisterUserRequest();
+        diaryService.registerUser(registerUserRequest1);
+        diaryService.findByUserName(registerUserRequest1.getUserName());
         assertEquals(2, diaryService.count());
-        assertEquals("Tobi", diaryService.findByUserName("Tobi").getUserName());
+        assertEquals(registerUserRequest1.getUserName(), diaryService.findByUserName(registerUserRequest1.getUserName()).getUserName());
 
-        diaryService.delete("Tobi","password");
+        diaryService.delete(registerUserRequest.getUserName(),registerUserRequest.getPassword());
         assertEquals(1,diaryService.count());
-       assertThrows(IllegalArgumentException.class, ()-> diaryService.findByUserName("Tobi"));
+       assertThrows(IllegalArgumentException.class, ()-> diaryService.findByUserName(registerUserRequest.getUserName()));
 
     }
 

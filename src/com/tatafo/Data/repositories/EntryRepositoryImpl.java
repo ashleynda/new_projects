@@ -1,7 +1,6 @@
-package Data.repositories;
+package com.tatafo.Data.repositories;
 
-import Data.models.Diary;
-import Data.models.Entry;
+import com.tatafo.Data.models.Entry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +54,16 @@ public class EntryRepositoryImpl implements EntryRepository {
     public void clear() {
         entries.clear();
     }
+
+    @Override
+    public Entry findUserName(String userName, String title) {
+        for (Entry entry : entries) {
+            if (entry.getOwnerName().equalsIgnoreCase(userName) && (entry.getTitle().equalsIgnoreCase(title)))
+                return entry;
+        }
+        return null;
+    }
+
     private int generateId() {
         return entries.size() + 1;
     }
