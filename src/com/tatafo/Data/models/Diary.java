@@ -1,18 +1,25 @@
 package com.tatafo.Data.models;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Document
 public class Diary {
 
-    private int id;
+    @Id
+    private String id;
     private String userName;
     private String password;
-    private String isLocked;
+    public boolean isLocked;
+    @DBRef
     private List<Entry> entries = new ArrayList<>();
-    private LocalDateTime registrationTime;
-}
+//    private LocalDateTime registrationTime;
+
+   }

@@ -1,9 +1,10 @@
-package com.tatafo.dtos;
+package com.tatafo.dtos.request;
 
 import lombok.Data;
 
 @Data
-public class LoginRequest {
+public class RegisterUserRequest {
+
     private String userName;
     private String password;
 }

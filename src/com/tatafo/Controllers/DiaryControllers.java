@@ -1,43 +1,76 @@
 package com.tatafo.Controllers;
 
 import com.tatafo.Data.models.Diary;
-import com.tatafo.dtos.LoginRequest;
-import com.tatafo.dtos.RegisterUserRequest;
+import com.tatafo.Data.models.Entry;
+import com.tatafo.dtos.Response.ApiResponse;
+import com.tatafo.dtos.request.CreateEntryRequest;
+import com.tatafo.dtos.request.LoginRequest;
+import com.tatafo.dtos.request.RegisterUserRequest;
+import com.tatafo.exceptions.DiaryExistException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.tatafo.services.DiaryService;
-import com.tatafo.services.DiaryServiceImpl;
 
 @RestController
+@RequestMapping("/Journal")
+@CrossOrigin(origins = "http://127.0.0.1:5501")
 public class DiaryControllers {
-    private DiaryService diaryService = new DiaryServiceImpl();
+    @Autowired
+    private DiaryService diaryService;
     @PostMapping("/register")
-    public String registerUser(RegisterUserRequest registerUserRequest){
-        diaryService.registerUser(registerUserRequest);
-        return "Successful";
+    public ApiResponse<Object> registerUser(@RequestBody RegisterUserRequest registerUserRequest)  {
+        try {
+//            diaryService.registerUser(registerUserRequest);
+            return new ApiResponse<>(diaryService.registerUser(registerUserRequest));
+        } catch (Exception e) {
+            return new ApiResponse<>(e.getMessage());
+        }
     }
+
+
     @PatchMapping("/unlock")
-    public String unlockDiary(LoginRequest loginRequest){
-        diaryService.unlock(loginRequest);
-        return "Unlocked";
+    public ApiResponse<Object> unlockDiary(@RequestBody LoginRequest loginRequest){
+        try {
+            return new ApiResponse<>(diaryService.unlock(loginRequest));
+        } catch (Exception e) {
+            return new ApiResponse<>(e.getMessage());
+        }
+//        diaryService.unlock(loginRequest);
+//        return "Unlocked";
     }
 
     @PostMapping("/createNewEntry")
-    public String createEntry(String userName, String title, String body){
-       diaryService.addEntry(userName, title, body);
-        return "Entry Created";
+    public ApiResponse<Object> createEntry(@RequestBody CreateEntryRequest createEntryRequest){
+        try {
+            return new ApiResponse<>(diaryService.addEntry(createEntryRequest));
+        } catch (Exception  e) {
+            return new ApiResponse<>(e.getMessage());
+        }
+//       diaryService.addEntry(createEntryRequest);
+//        return "Entry Created";
     }
-    @GetMapping("/findDiary")
-    public Diary findDiary(String userName){
+    @GetMapping("/findDiary/{userName}")
+    public Diary findDiary(@PathVariable String userName){
         return diaryService.findByUserName(userName);
     }
 
+    @GetMapping("/findEntry/{userName}/{title}")
+    public ApiResponse<Object> findEntry(@PathVariable String userName, @PathVariable String title){
+        try {
+            return new ApiResponse<>(diaryService.findEntry(userName, title));
+        } catch (Exception e) {
+            return new ApiResponse<>(e.getMessage());
+        }
+//        return diaryService.findEntry(userName, title);
+    }
+
     @DeleteMapping("/delete")
-    public void delete(String userName, String password) {
-        diaryService.delete(userName, password);
+    public void delete(String password) {
+        diaryService.delete(password);
     }
 
     @PatchMapping("/lock")
-    public String lock(String username) {
+    public String lock(@RequestBody String username) {
         diaryService.lock(username);
         return "Locked";
     }

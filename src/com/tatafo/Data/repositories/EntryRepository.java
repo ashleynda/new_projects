@@ -1,15 +1,15 @@
 package com.tatafo.Data.repositories;
 
 import com.tatafo.Data.models.Entry;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface EntryRepository {
-    Entry save(Entry emtry
-    );
-    void delete(Entry diary);
-    Entry findById(int i);
-    Iterable <Entry> findAll();
-    long count();
-    void clear();
+import java.util.List;
+import java.util.Optional;
 
-    Entry findUserName(String userName, String title);
+@Repository
+public interface EntryRepository extends MongoRepository<Entry, String> {
+    Optional<Entry> findByOwnerNameAndTitle(String ownerName, String title);
+
+    List<Entry> findByOwnerName(String userName);
 }
