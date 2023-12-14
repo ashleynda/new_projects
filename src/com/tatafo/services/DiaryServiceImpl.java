@@ -34,9 +34,6 @@ public class DiaryServiceImpl implements DiaryService{
     @Override
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
         checkForUniqueUserName(registerUserRequest.getUserName());
-//        Diary newDiary = new Diary();
-//        newDiary.setUserName(registerUserRequest.getUserName());
-//        newDiary.setPassword(registerUserRequest.getPassword());
         return map(diaryRepository.save(map(registerUserRequest)));
         
     }
@@ -54,33 +51,15 @@ public class DiaryServiceImpl implements DiaryService{
     private void checkForUniqueUserName(String userName) {
         Optional<Diary> diary = findBy(userName);
         if (diary.isPresent())
-            throw new DiaryExistException("Diary Created Successfully");
-//        for (Diary existingName: diaryRepository.findAll()) {
-//            if (existingName.getUserName().equals(userName)){
-//                throw new IllegalArgumentException("USER NAME ALREADY IN USE");
-//            }
-//        }
+            throw new DiaryExistException("USER NAME ALREADY IN USE");
     }
-//    @Override
-//    public Diary findByUserName(String userName) {
-//        for (Diary diary : diaryRepository.findBy(userName))
-//            if (diary.getUserName().equals(userName))
-//                return diary;
-//       throw new IllegalArgumentException("not found");
-//    }
+
     @Override
     public void delete(String password) {
         Diary diary = validateUserName(password);
-        delete(password);
+        diaryRepository.delete(diary);
     }
-//    private void removeDiary(String password, Diary diary) {
-//        if (diary.getPassword().equals(password)){
-//            diaryRepository.delete(diary);
-//        }
-//        else {
-//            throw new IllegalArgumentException("Invalid Password");
-//        }
-//    }
+
     private Diary validateUserName(String userName) {
         Optional<Diary> diary = findBy(userName);
         if (diary.isPresent())
@@ -97,7 +76,7 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
     public Optional<Diary> findBy(String userName){
-        Optional<Diary> diary = diaryRepository.findDiaryByUserName(userName);
+        Optional<Diary> diary = diaryRepository.findByUserName(userName);
         return diary;
     }
 
@@ -108,36 +87,26 @@ public class DiaryServiceImpl implements DiaryService{
 
     @Override
     public LoginUserResponse unlock(LoginRequest loginRequest) {
-            Optional<Diary> diaryOptional = diaryRepository.findDiaryByUserName(loginRequest.getUserName());
+        Optional<Diary> diaryOptional = diaryRepository.findByUserName(loginRequest.getUserName());
 
-            if (diaryOptional.isEmpty()) {
-                throw new IllegalArgumentException("Diary not found");
-            }
-
-            Diary diary = diaryOptional.get();
-
-            if (diary.getPassword() == null || !diary.getPassword().equals(loginRequest.getPassword())) {
-                throw new IllegalArgumentException("User credentials not correct");
-                // Alternatively, you can return a LoginUserResponse indicating failure
-                // return new LoginUserResponse(false, "User credentials not correct");
-            }
-
-            diary.setLocked(false);
-            diaryRepository.save(diary);
-
-            // Construct LoginUserResponse with appropriate parameters based on your response structure
-            return new LoginUserResponse("Diary unlocked successfully");
+        if (diaryOptional.isEmpty()) {
+            throw new IllegalArgumentException("Diary not found");
         }
 
-//        Optional<Diary> diary = diaryRepository.findDiaryByUserName(loginRequest.getUserName());
-//        if (diary.isEmpty()) throw new IllegalArgumentException("Diary not found");
-//        if (diary.get().getPassword().equals(loginRequest.getPassword())) diary.get().setLocked(false);
-//        else throw new IllegalArgumentException("User credentials not correct");
-//        diaryRepository.save(diary.get());
-//        return new LoginUserResponse();
-//        diaryRepository.save(diary.get());
-//        return LoginUserResponse;
-//        return null;
+        Diary diary = diaryOptional.get();
+        if (diary.getPassword() == null || !diary.getPassword().equals(loginRequest.getPassword())) {
+            throw new IllegalArgumentException("User credentials not correct");
+            // Alternatively, you can return a LoginUserResponse indicating failure
+            // return new LoginUserResponse(false, "User credentials not correct");
+        }
+
+        diary.setLocked(false);
+        diaryRepository.save(diary);
+
+        // Construct LoginUserResponse with appropriate parameters based on your response structure
+        return new LoginUserResponse("Diary unlocked successfully");
+    }
+
 
 
     @Override
@@ -151,7 +120,7 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
     private Diary validate(String userName) {
-        Optional<Diary> foundDiary = diaryRepository.findDiaryByUserName(userName);
+        Optional<Diary> foundDiary = diaryRepository.findByUserName(userName);
         if (foundDiary.isEmpty())
             throw new IllegalArgumentException("Diary is not found");
         if (foundDiary.get().isLocked())

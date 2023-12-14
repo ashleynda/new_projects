@@ -8,11 +8,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Mapper {
-//    public static Entry map(CreateEntryRequest createEntryRequest) {
-//    }
-//        Entry entry = new Entry();
-//        entry.setOwnerName(createEntryRequest                                             );
-//    }
 
     public static Diary map(RegisterUserRequest registerUserRequest) {
         Diary diary = new Diary();
