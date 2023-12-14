@@ -20,7 +20,6 @@ public class DiaryControllers {
     @PostMapping("/register")
     public ApiResponse<Object> registerUser(@RequestBody RegisterUserRequest registerUserRequest)  {
         try {
-//            diaryService.registerUser(registerUserRequest);
             return new ApiResponse<>(diaryService.registerUser(registerUserRequest));
         } catch (Exception e) {
             return new ApiResponse<>(e.getMessage());
@@ -35,8 +34,7 @@ public class DiaryControllers {
         } catch (Exception e) {
             return new ApiResponse<>(e.getMessage());
         }
-//        diaryService.unlock(loginRequest);
-//        return "Unlocked";
+
     }
 
     @PostMapping("/createNewEntry")
@@ -46,8 +44,6 @@ public class DiaryControllers {
         } catch (Exception  e) {
             return new ApiResponse<>(e.getMessage());
         }
-//       diaryService.addEntry(createEntryRequest);
-//        return "Entry Created";
     }
     @GetMapping("/findDiary/{userName}")
     public Diary findDiary(@PathVariable String userName){
@@ -61,7 +57,6 @@ public class DiaryControllers {
         } catch (Exception e) {
             return new ApiResponse<>(e.getMessage());
         }
-//        return diaryService.findEntry(userName, title);
     }
 
     @DeleteMapping("/delete")
@@ -75,7 +70,4 @@ public class DiaryControllers {
         return "Locked";
     }
 
-//    @PatchMapping("/updateEntry")
-//    public void updateEntry(String userName, String title, String body) {
-//    }
 }
