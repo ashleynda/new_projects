@@ -2,16 +2,17 @@ package com.tatafo.services;
 
 import com.tatafo.Data.models.Diary;
 import com.tatafo.Data.models.Entry;
-import com.tatafo.dtos.Response.LoginUserResponse;
 import com.tatafo.dtos.request.*;
-import com.tatafo.dtos.Response.RegisterUserResponse;
+import com.tatafo.dtos.response.LoginUserResponse;
+import com.tatafo.dtos.response.UpdateEntryResponse;
+import com.tatafo.dtos.response.RegisterUserResponse;
 
 public interface DiaryService {
     void lock(String userName);
 
     RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest);
     Diary findByUserName(String userName);
-    String delete(DeleteEntryRequest deleteEntryRequest);
+    void delete(String password);
     long count();
     void clear();
     Iterable <Diary> findAll();
@@ -20,5 +21,8 @@ public interface DiaryService {
     void update(String userName, String oldPassword, String newPassword);
 
     Entry findEntry(String userName, String title);
-    Entry updateEntry(UpdateEntryRequest updateEntryRequest);
+
+    UpdateEntryResponse updateEntry(UpdateEntryRequest updateEntryRequest);
+
+    String deleteEntry(DeleteEntryRequest deleteEntryRequest);
 }

@@ -1,10 +1,9 @@
 package com.tatafo.Controllers;
 
 import com.tatafo.Data.models.Diary;
-import com.tatafo.Data.models.Entry;
-import com.tatafo.dtos.Response.ApiResponse;
 import com.tatafo.dtos.request.*;
-import com.tatafo.exceptions.DiaryExistException;
+import com.tatafo.dtos.response.ApiResponse;
+import com.tatafo.dtos.response.UpdateEntryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.tatafo.services.DiaryService;
@@ -58,13 +57,8 @@ public class DiaryControllers {
     }
 
     @DeleteMapping("/delete")
-    public ApiResponse<Object> delete(DeleteEntryRequest deleteEntryRequest) {
-        try {
-            return new ApiResponse<>(diaryService.delete(deleteEntryRequest));
-        } catch (Exception e) {
-            return new ApiResponse<>(e.getMessage());
-        }
-//        diaryService.delete(password);
+    public void delete(String password) {
+        diaryService.delete(password);
     }
 
     @PatchMapping("/lock")
@@ -73,12 +67,23 @@ public class DiaryControllers {
         return "Locked";
     }
 
-    @PatchMapping("/updateEntry")
-    public ApiResponse<Object> updateEntry(UpdateEntryRequest updateEntryRequest) {
-        try {
+    @PatchMapping("/update-entry")
+    public ApiResponse<Object> updateEntry(UpdateEntryRequest updateEntryRequest){
+        try{
             return new ApiResponse<>(diaryService.updateEntry(updateEntryRequest));
-        } catch (Exception e) {
-            return new ApiResponse<>(e.getMessage());
+        } catch (Exception error){
+            return new ApiResponse<>(error.getMessage());
+        }
+
+    }
+
+    @DeleteMapping("/delete-entry")
+    public ApiResponse<Object> deleteEntry(DeleteEntryRequest deleteEntryRequest){
+
+        try{
+            return new ApiResponse<>(diaryService.deleteEntry(deleteEntryRequest));
+        } catch (Exception error){
+            return new ApiResponse<>(error.getMessage());
         }
     }
 
