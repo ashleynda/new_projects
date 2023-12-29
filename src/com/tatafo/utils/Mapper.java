@@ -2,7 +2,7 @@ package com.tatafo.utils;
 
 import com.tatafo.Data.models.Diary;
 import com.tatafo.dtos.request.RegisterUserRequest;
-import com.tatafo.dtos.Response.RegisterUserResponse;
+import com.tatafo.dtos.response.RegisterUserResponse;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,4 +1,4 @@
-package com.tatafo.dtos.Response;
+package com.tatafo.dtos.response;
 
 import lombok.Data;
 

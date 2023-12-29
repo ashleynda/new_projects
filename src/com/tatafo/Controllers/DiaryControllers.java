@@ -1,12 +1,9 @@
 package com.tatafo.Controllers;
 
 import com.tatafo.Data.models.Diary;
-import com.tatafo.Data.models.Entry;
-import com.tatafo.dtos.Response.ApiResponse;
-import com.tatafo.dtos.request.CreateEntryRequest;
-import com.tatafo.dtos.request.LoginRequest;
-import com.tatafo.dtos.request.RegisterUserRequest;
-import com.tatafo.exceptions.DiaryExistException;
+import com.tatafo.dtos.request.*;
+import com.tatafo.dtos.response.ApiResponse;
+import com.tatafo.dtos.response.UpdateEntryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.tatafo.services.DiaryService;
@@ -68,6 +65,26 @@ public class DiaryControllers {
     public String lock(@RequestBody String username) {
         diaryService.lock(username);
         return "Locked";
+    }
+
+    @PatchMapping("/update-entry")
+    public ApiResponse<Object> updateEntry(UpdateEntryRequest updateEntryRequest){
+        try{
+            return new ApiResponse<>(diaryService.updateEntry(updateEntryRequest));
+        } catch (Exception error){
+            return new ApiResponse<>(error.getMessage());
+        }
+
+    }
+
+    @DeleteMapping("/delete-entry")
+    public ApiResponse<Object> deleteEntry(DeleteEntryRequest deleteEntryRequest){
+
+        try{
+            return new ApiResponse<>(diaryService.deleteEntry(deleteEntryRequest));
+        } catch (Exception error){
+            return new ApiResponse<>(error.getMessage());
+        }
     }
 
 }
