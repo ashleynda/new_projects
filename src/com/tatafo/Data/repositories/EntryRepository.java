@@ -9,7 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface EntryRepository extends MongoRepository<Entry, String> {
-    Optional<Entry> findByOwnerNameAndTitle(String ownerName, String title);
+    Optional<Entry> findByUserNameAndTitle(String userName, String title);
+    List<Entry> findByUserName(String userName);
+    Optional<Entry> findById(String id);
 
-    List<Entry> findByOwnerName(String userName);
+//    Optional<Entry> findEntryByOwnernameAndTitle(String username, String title);
 }

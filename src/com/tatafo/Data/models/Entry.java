@@ -16,6 +16,6 @@ public class Entry{
     private String title;
     private String body;
 
-    private String ownerName;
+    private String userName;
     private LocalDateTime timeCreated = LocalDateTime.now();
 }

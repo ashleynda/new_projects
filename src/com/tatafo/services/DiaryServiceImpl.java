@@ -3,10 +3,9 @@ package com.tatafo.services;
 import com.tatafo.Data.models.Diary;
 import com.tatafo.Data.models.Entry;
 import com.tatafo.Data.repositories.DiaryRepository;
+import com.tatafo.Data.repositories.EntryRepository;
 import com.tatafo.dtos.Response.LoginUserResponse;
-import com.tatafo.dtos.request.CreateEntryRequest;
-import com.tatafo.dtos.request.LoginRequest;
-import com.tatafo.dtos.request.RegisterUserRequest;
+import com.tatafo.dtos.request.*;
 import com.tatafo.dtos.Response.RegisterUserResponse;
 import com.tatafo.exceptions.DiaryExistException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,8 @@ public class DiaryServiceImpl implements DiaryService{
     DiaryRepository diaryRepository;
     @Autowired
     private EntryService entryService;
+    @Autowired
+    private EntryRepository entryRepository;
 
     @Override
     public void lock(String userName) {
@@ -35,7 +36,6 @@ public class DiaryServiceImpl implements DiaryService{
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
         checkForUniqueUserName(registerUserRequest.getUserName());
         return map(diaryRepository.save(map(registerUserRequest)));
-        
     }
 
     @Override
@@ -47,32 +47,25 @@ public class DiaryServiceImpl implements DiaryService{
         throw new IllegalArgumentException("Diary not found");
     }
 
+    @Override
+    public String delete(DeleteEntryRequest deleteEntryRequest) {
+        Diary diary = findByUserName(deleteEntryRequest.getUserName());
+        entryService.delete(deleteEntryRequest.getUserName(), deleteEntryRequest.getTitle());
+        return "Entry deleted successfully";
+    }
 
     private void checkForUniqueUserName(String userName) {
         Optional<Diary> diary = findBy(userName);
         if (diary.isPresent())
             throw new DiaryExistException("USER NAME ALREADY IN USE");
     }
-
-    @Override
-    public void delete(String password) {
-        Diary diary = validateUserName(password);
-        diaryRepository.delete(diary);
-    }
-
-    private Diary validateUserName(String userName) {
-        Optional<Diary> diary = findBy(userName);
-        if (diary.isPresent())
-            return diary.get();
-        throw new IllegalArgumentException("DIARY USER DOES NOT EXIST");
-    }
     @Override
     public long count() {
         return diaryRepository.count();
     }
+
     @Override
     public void clear() {
-
     }
 
     public Optional<Diary> findBy(String userName){
@@ -107,14 +100,11 @@ public class DiaryServiceImpl implements DiaryService{
         return new LoginUserResponse("Diary unlocked successfully");
     }
 
-
-
     @Override
     public Entry addEntry(CreateEntryRequest createEntryRequest) {
         Diary diary = validate(createEntryRequest.getUserName());
         Entry entry = entryService.addEntry(createEntryRequest);
         List<Entry> entries = entryService.findAllEntry(createEntryRequest.getUserName());
-
         diary.setEntries(entries);
         return entry;
     }
@@ -138,8 +128,32 @@ public class DiaryServiceImpl implements DiaryService{
 
     @Override
     public Entry findEntry(String userName, String title) {
-        Entry entry = entryService.findEntry(userName, title);
-        return entry;
+        try {
+            Entry entry = entryService.findEntry(userName, title);
+            if (entry == null)
+                throw new IllegalArgumentException("Entry not found");
+            return entry;
+        } catch (Exception e) {
+            throw new RuntimeException("Error occured while finding entry");
+        }
     }
+
+    @Override
+    public Entry updateEntry(UpdateEntryRequest updateEntryRequest) {
+     Diary diary = validate(updateEntryRequest.getUserName());
+     Entry entry = entryService.updateEntry(updateEntryRequest);
+     List<Entry> updatedEntries = entryService.findAllEntry(updateEntryRequest.getUserName());
+     diary.setEntries(updatedEntries);
+     return entry;
+
+
+    }
+
+//    @Override
+//    public Entry updateEntry(String title, String body) {
+//        Entry entry = findEntry(title, body);
+//        if (Entry == findEntry(title))
+//    }
+
 
 }
