@@ -1,8 +1,10 @@
 package com.tatafo.services;
 
-import com.tatafo.Data.models.Diary;
 import com.tatafo.Data.models.Entry;
+import com.tatafo.dtos.request.DeleteEntryRequest;
+import com.tatafo.dtos.response.UpdateEntryResponse;
 import com.tatafo.dtos.request.CreateEntryRequest;
+import com.tatafo.dtos.request.UpdateEntryRequest;
 
 import java.util.List;
 
@@ -16,6 +18,10 @@ public interface EntryService {
     List<Entry> findAllEntry(String userName);
 
     Entry findEntry(String userName, String title);
+
+    UpdateEntryResponse updateEntry(UpdateEntryRequest updateEntryRequest);
+
+    String deleteEntry(DeleteEntryRequest deleteEntryRequest);
 }
 
 

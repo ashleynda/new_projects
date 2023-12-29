@@ -3,11 +3,10 @@ package com.tatafo.services;
 import com.tatafo.Data.models.Diary;
 import com.tatafo.Data.models.Entry;
 import com.tatafo.Data.repositories.DiaryRepository;
-import com.tatafo.dtos.Response.LoginUserResponse;
-import com.tatafo.dtos.request.CreateEntryRequest;
-import com.tatafo.dtos.request.LoginRequest;
-import com.tatafo.dtos.request.RegisterUserRequest;
-import com.tatafo.dtos.Response.RegisterUserResponse;
+import com.tatafo.dtos.request.*;
+import com.tatafo.dtos.response.LoginUserResponse;
+import com.tatafo.dtos.response.UpdateEntryResponse;
+import com.tatafo.dtos.response.RegisterUserResponse;
 import com.tatafo.exceptions.DiaryExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,6 +139,18 @@ public class DiaryServiceImpl implements DiaryService{
     public Entry findEntry(String userName, String title) {
         Entry entry = entryService.findEntry(userName, title);
         return entry;
+    }
+
+    @Override
+    public UpdateEntryResponse updateEntry(UpdateEntryRequest updateEntryRequest) {
+        UpdateEntryResponse updateEntryResponse = entryService.updateEntry(updateEntryRequest);
+        return updateEntryResponse;
+    }
+
+    @Override
+    public String deleteEntry(DeleteEntryRequest deleteEntryRequest) {
+        String response = entryService.deleteEntry(deleteEntryRequest);
+        return response;
     }
 
 }

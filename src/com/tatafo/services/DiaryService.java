@@ -2,11 +2,10 @@ package com.tatafo.services;
 
 import com.tatafo.Data.models.Diary;
 import com.tatafo.Data.models.Entry;
-import com.tatafo.dtos.Response.LoginUserResponse;
-import com.tatafo.dtos.request.CreateEntryRequest;
-import com.tatafo.dtos.request.LoginRequest;
-import com.tatafo.dtos.request.RegisterUserRequest;
-import com.tatafo.dtos.Response.RegisterUserResponse;
+import com.tatafo.dtos.request.*;
+import com.tatafo.dtos.response.LoginUserResponse;
+import com.tatafo.dtos.response.UpdateEntryResponse;
+import com.tatafo.dtos.response.RegisterUserResponse;
 
 public interface DiaryService {
     void lock(String userName);
@@ -22,4 +21,8 @@ public interface DiaryService {
     void update(String userName, String oldPassword, String newPassword);
 
     Entry findEntry(String userName, String title);
+
+    UpdateEntryResponse updateEntry(UpdateEntryRequest updateEntryRequest);
+
+    String deleteEntry(DeleteEntryRequest deleteEntryRequest);
 }
