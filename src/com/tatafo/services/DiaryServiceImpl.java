@@ -135,11 +135,18 @@ public class DiaryServiceImpl implements DiaryService{
         else throw new IllegalArgumentException("Invalid Credentials");
     }
 
+//    @Override
+//    public List<Entry> findEntries(String title, String userName) {
+//        List<Entry> entries = entryService.findEntries(title, userName);
+//        return entries;
+//    }
+
     @Override
     public Entry findEntry(String userName, String title) {
         Entry entry = entryService.findEntry(userName, title);
         return entry;
     }
+
 
     @Override
     public UpdateEntryResponse updateEntry(UpdateEntryRequest updateEntryRequest) {

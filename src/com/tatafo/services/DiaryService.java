@@ -7,6 +7,8 @@ import com.tatafo.dtos.response.LoginUserResponse;
 import com.tatafo.dtos.response.UpdateEntryResponse;
 import com.tatafo.dtos.response.RegisterUserResponse;
 
+import java.util.List;
+
 public interface DiaryService {
     void lock(String userName);
 
@@ -19,6 +21,7 @@ public interface DiaryService {
     LoginUserResponse unlock(LoginRequest loginRequest);
     Entry addEntry(CreateEntryRequest createEntryRequest);
     void update(String userName, String oldPassword, String newPassword);
+//    List<Entry> findEntries(String title, String userName);
 
     Entry findEntry(String userName, String title);
 

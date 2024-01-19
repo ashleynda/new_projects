@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class DeleteEntryRequest {
 
-    private String ownerName;
+    private String userName;
     private String title;
 
 }

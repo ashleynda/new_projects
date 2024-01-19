@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -21,22 +22,29 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public void delete(String userName, String title) {
-        Entry entry = entryRepository.findByOwnerNameAndTitle(userName, title).get();
+        Entry entry = entryRepository.findByUserNameAndTitle(userName, title).get();
         entryRepository.delete(entry);
 
     }
 
     public Entry findEntry(String userName, String title) {
-        Entry foundEntry = entryRepository.findByOwnerNameAndTitle(userName, title).get();
-        boolean entryNotFound = foundEntry == null;
-        if (entryNotFound) throw new IllegalArgumentException("Entry not found");
-        return foundEntry;
+        Optional<Entry>  foundEntry = entryRepository.findByUserNameAndTitle(userName, title);
+
+        if (foundEntry.isEmpty()) throw new IllegalArgumentException("Entry not found");
+        return foundEntry.get();
 
     }
 
+
+//    @Override
+//    public List<Entry> findEntries(String title, String username) {
+//        List<Entry> entries = entryRepository.findEntriesByTitleAndUserName(title, username);
+//        return entries;
+//    }
+
     @Override
     public UpdateEntryResponse updateEntry(UpdateEntryRequest updateEntryRequest) {
-        Entry foundEntry = findEntry(updateEntryRequest.getOwnerName(), updateEntryRequest.getTitle());
+        Entry foundEntry = findEntry(updateEntryRequest.getUserName(), updateEntryRequest.getTitle());
         foundEntry.setTitle(updateEntryRequest.getNewTitle());
         foundEntry.setBody(updateEntryRequest.getBody());
 
@@ -52,7 +60,7 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public String deleteEntry(DeleteEntryRequest deleteEntryRequest) {
-        Entry foundEntry = findEntry(deleteEntryRequest.getOwnerName(), deleteEntryRequest.getTitle());
+        Entry foundEntry = findEntry(deleteEntryRequest.getUserName(), deleteEntryRequest.getTitle());
         entryRepository.delete(foundEntry);
         return "Entry deleted Successfully";
     }
@@ -65,7 +73,7 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public Entry addEntry(CreateEntryRequest createEntryRequest) {
         Entry newEntry = new Entry();
-        newEntry.setOwnerName(createEntryRequest.getUserName());
+        newEntry.setUserName(createEntryRequest.getUserName());
         newEntry.setTitle(createEntryRequest.getTitle());
         newEntry.setBody(createEntryRequest.getBody());
         entryRepository.save(newEntry);
@@ -74,6 +82,6 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public List<Entry> findAllEntry(String userName) {
-        return entryRepository.findByOwnerName(userName);
+        return entryRepository.findByUserName(userName);
     }
 }

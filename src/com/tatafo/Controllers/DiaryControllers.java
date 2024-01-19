@@ -56,10 +56,14 @@ public class DiaryControllers {
         }
     }
 
-    @DeleteMapping("/delete")
-    public void delete(String password) {
-        diaryService.delete(password);
-    }
+//    @GetMapping("/findEntries/{title}/{userName}")
+//    public ApiResponse<Object> findEntries(@PathVariable String title, @PathVariable String userName) {
+//        try {
+//            return new ApiResponse<>(diaryService.findEntries(title, userName));
+//        } catch (Exception e) {
+//            return new ApiResponse<>(e.getMessage());
+//        }
+//    }
 
     @PatchMapping("/lock")
     public String lock(@RequestBody String username) {
@@ -68,21 +72,23 @@ public class DiaryControllers {
     }
 
     @PatchMapping("/update-entry")
-    public ApiResponse<Object> updateEntry(UpdateEntryRequest updateEntryRequest){
+    public ApiResponse<Object> updateEntry(@RequestBody UpdateEntryRequest updateEntryRequest){
         try{
+            System.out.println(updateEntryRequest);
             return new ApiResponse<>(diaryService.updateEntry(updateEntryRequest));
         } catch (Exception error){
+            System.out.println(updateEntryRequest);
             return new ApiResponse<>(error.getMessage());
         }
 
     }
 
     @DeleteMapping("/delete-entry")
-    public ApiResponse<Object> deleteEntry(DeleteEntryRequest deleteEntryRequest){
-
+    public ApiResponse<Object> deleteEntry(@RequestBody DeleteEntryRequest deleteEntryRequest){
         try{
             return new ApiResponse<>(diaryService.deleteEntry(deleteEntryRequest));
         } catch (Exception error){
+            System.out.println(deleteEntryRequest);
             return new ApiResponse<>(error.getMessage());
         }
     }

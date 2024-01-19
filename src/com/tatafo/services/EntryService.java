@@ -19,6 +19,8 @@ public interface EntryService {
 
     Entry findEntry(String userName, String title);
 
+//    List<Entry> findEntries(String title, String username);
+
     UpdateEntryResponse updateEntry(UpdateEntryRequest updateEntryRequest);
 
     String deleteEntry(DeleteEntryRequest deleteEntryRequest);

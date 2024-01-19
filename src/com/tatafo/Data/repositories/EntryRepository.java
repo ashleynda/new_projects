@@ -9,9 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface EntryRepository extends MongoRepository<Entry, String> {
-    Optional<Entry> findByUserNameAndTitle(String userName, String title);
-    List<Entry> findByUserName(String userName);
+//    Optional<Entry> findByUserNameAndTitle(String userName, String title);
     Optional<Entry> findById(String id);
+    Optional<Entry> findByUserNameAndTitle(String username, String title);
 
-//    Optional<Entry> findEntryByOwnernameAndTitle(String username, String title);
+    List<Entry> findByUserName(String userName);
+
+
+    List<Entry> findEntriesByTitleAndUserName(String title, String userName);
 }
